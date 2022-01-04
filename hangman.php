@@ -261,35 +261,11 @@ if(!isset($_SESSION["display"])){
 
 // __________Compare INPUT with WORD __________ //
 
-    $i = 0;
-
-function cleanString($text) {
-    $utf8 = array(
-        '/[áàâãªä]/u'   =>   'a',
-        '/[ÁÀÂÃÄ]/u'    =>   'A',
-        '/[ÍÌÎÏ]/u'     =>   'I',
-        '/[íìîï]/u'     =>   'i',
-        '/[éèêë]/u'     =>   'e',
-        '/[ÉÈÊË]/u'     =>   'E',
-        '/[óòôõºö]/u'   =>   'o',
-        '/[ÓÒÔÕÖ]/u'    =>   'O',
-        '/[úùûü]/u'     =>   'u',
-        '/[ÚÙÛÜ]/u'     =>   'U',
-        '/ç/'           =>   'c',
-        '/Ç/'           =>   'C',
-        '/ñ/'           =>   'n',
-        '/Ñ/'           =>   'N',
-        '/–/'           =>   '-', // UTF-8 hyphen to "normal" hyphen
-        '/[’‘‹›‚]/u'    =>   ' ', // Literally a single quote
-        '/[“”«»„]/u'    =>   ' ', // Double quote
-        '/ /'           =>   ' ', // nonbreaking space (equiv. to 0x160)
-    );
-    return preg_replace(array_keys($utf8), array_values($utf8), $text);
-}
+$i = 0;
 
 if(isset($_POST["letter"])){
     $letters=$_POST["letter"];
-    $letters=htmlspecialchars(cleanString($letters));
+    $letters=htmlspecialchars(ctype_alpha($letters)); // some securities
     $OK = false;
     foreach($_SESSION["Cword"] as $wletter){
         if(strtoupper($letters) == $wletter){
@@ -331,7 +307,7 @@ if(isset($_POST["newgame"])||$_SESSION["erreur"] >6){
 </div>
 <div class='text'> 
     <form method ="post">
-        <input type='text' name='letter' id ='letter' maxlength="1">  </input> 
+        <input type="text" name="letter" id ="letter" maxlength="1" >  </input> <!-- if we want to accept only alpha pattern="[A-Za-z]*" -->
     </form>   
 </div>
 <?php 

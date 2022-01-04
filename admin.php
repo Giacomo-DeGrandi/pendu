@@ -121,7 +121,7 @@ function cleanString($text) {
 		<div id="addiv">
 			<span> add a word here </span>
 		    <form method ="post">
-		        <input type='text' name='letter' pattern="[A-Za-z]*" /> <!-- first security to avoid anything that is not a letter -->
+		        <input type="text" name="letter" pattern="[A-Za-z]*" /> <!-- first security to avoid anything that is not a letter -->
 		    </form>  
 		</div>
 	</div> <!-- mainwrapper -->
@@ -132,7 +132,7 @@ if(isset($_POST['letter']) and !empty($_POST['letter'])){
 	if(!strpos($_POST['letter'], ' ')){
 		if(ctype_alpha($_POST['letter'])){ 	// second security to avoid anything else that s not a letter 
 			$text= implode(' ',$testarr);
-			$addword=strtoupper(cleanString($_POST['letter']));	// third security:capital,regex to exclude or replace,spchars for html inj
+			$addword=strtoupper(htmlspecialchars($_POST['letter'])); // some more security
 			$text .= ' '.$addword;
 			file_put_contents('mots.txt', $text);
 			header('Location:admin.php');
