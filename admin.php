@@ -87,7 +87,7 @@ foreach ($testarr as $k => $words) {
 }
 echo '</table>';
 
-/*
+
 function cleanString($text) {
     $utf8 = array(
         '/[áàâãªä]/u'   =>   'a',
@@ -111,7 +111,7 @@ function cleanString($text) {
     );
     return preg_replace(array_keys($utf8), array_values($utf8), $text);
 }
-*/
+
 
 ?>
 		<span>
@@ -133,7 +133,7 @@ if(isset($_POST['letter']) and !empty($_POST['letter'])){
 	if(!strpos($_POST['letter'], ' ')){
 		if(ctype_alpha($_POST['letter'])){ 	// second security to avoid anything else that s not a letter 
 			$text= implode(' ',$testarr);
-			$addword=strtoupper(htmlspecialchars($_POST['letter'])); // some more security
+			$addword=strtoupper(htmlspecialchars(cleanString($_POST['letter']))); // some more security and change accented letters with not accented relatives
 			$text .= ' '.$addword;
 			file_put_contents('mots.txt', $text);
 			header('Location:admin.php');
