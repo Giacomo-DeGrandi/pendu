@@ -87,8 +87,7 @@ foreach ($testarr as $k => $words) {
 }
 echo '</table>';
 
-// ADD A word_______________________________
-
+/*
 function cleanString($text) {
     $utf8 = array(
         '/[áàâãªä]/u'   =>   'a',
@@ -112,7 +111,7 @@ function cleanString($text) {
     );
     return preg_replace(array_keys($utf8), array_values($utf8), $text);
 }
-
+*/
 
 ?>
 		<span>
@@ -127,6 +126,8 @@ function cleanString($text) {
 	</div> <!-- mainwrapper -->
 	<div id="subwrapper">
 <?php 
+
+// ADD A word_______________________________
 
 if(isset($_POST['letter']) and !empty($_POST['letter'])){
 	if(!strpos($_POST['letter'], ' ')){
