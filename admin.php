@@ -79,11 +79,15 @@ foreach ($testarr as $k => $words) {
     echo '<td><form method ="post" action="">   
             <input type="submit" value="delete" name="'.$words.'" /> 
         </form></div></td></tr>';
-        if(isset($_POST[$words])){
+    if( $k == 0){
+    	$first= $words;
+    } else {
+    	if(isset($_POST[$words])){
 			 $deleted = implode(' ',array_diff($testarr,array($words))); // I implode it into string to delete it
 			 file_put_contents('mots.txt', $deleted);
 			 header('Location:admin.php');
 		}
+    }
 }
 echo '</table>';
 
@@ -104,10 +108,10 @@ function cleanString($text) {
         '/Ç/'           =>   'C',
         '/ñ/'           =>   'n',
         '/Ñ/'           =>   'N',
-        '/–/'           =>   '', // UTF-8 hyphen to "normal" hyphen
-        '/[’‘‹›‚]/u'    =>   '', // Literally a single quote
-        '/[“”«»„]/u'    =>   '', // Double quote
-        '/ /'           =>   '', // nonbreaking space (equiv. to 0x160)
+        '/–/'           =>   ' ', // UTF-8 hyphen to "normal" hyphen
+        '/[’‘‹›‚]/u'    =>   ' ', // Literally a single quote
+        '/[“”«»„]/u'    =>   ' ', // Double quote
+        '/ /'           =>   ' ', // nonbreaking space (equiv. to 0x160)
     );
     return preg_replace(array_keys($utf8), array_values($utf8), $text);
 }
@@ -134,11 +138,21 @@ if(isset($_POST['letter']) and !empty($_POST['letter'])){
 		if(ctype_alpha($_POST['letter'])){ 	// second security to avoid anything else that s not a letter 
 			$text= implode(' ',$testarr);
 			$addword=strtoupper(htmlspecialchars(cleanString($_POST['letter']))); // some more security and change accented letters with not accented relatives
-			$text .= ' '.$addword;
-			file_put_contents('mots.txt', $text);
-			header('Location:admin.php');
+				//check for same word
+			if( !strpos(file_get_contents('mots.txt'), (' '.$addword)) and 
+				!strpos(file_get_contents('mots.txt'), ($addword.' ')) and
+				$first !== $addword ){
+				//echo $first;
+				//echo $addword;
+				//echo '!'.$text.'!';
+				$text .= ' '.$addword;
+				file_put_contents('mots.txt', $text);
+				header('Location:admin.php');
+			} else {
+				echo '<span>this word has already been taken</span>';
+			}
 		} else {
-			'<span>invalid input</span>';
+			echo '<span>invalid input</span>';
 		}
 	} else {
 		echo '<span>invalid input</span>';

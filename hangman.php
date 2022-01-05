@@ -45,6 +45,18 @@ a{
     font-size: 1em;
     font-family:  monospace;
 }
+h2 { 
+    font-size: 1.5em;
+    font-family:  monospace;
+    line-height: 5px;
+}
+h3 { 
+    line-height: 5px;
+    font-size: 1.5em;
+    font-family:  monospace;
+    display: inline;
+}
+
 
 .game{
     display : flex;
@@ -238,7 +250,7 @@ a{
 <?php 
 
 if(isset($_SESSION['erreur'])){
-    echo $_SESSION['erreur'];
+   // echo $_SESSION['erreur']; don't do nothing
 } else {
     $_SESSION['erreur']=0;
 }
@@ -261,11 +273,36 @@ if(!isset($_SESSION["display"])){
 
 // __________Compare INPUT with WORD __________ //
 
+function cleanString($text) {
+    $utf8 = array(
+        '/[áàâãªä]/u'   =>   'a',
+        '/[ÁÀÂÃÄ]/u'    =>   'A',
+        '/[ÍÌÎÏ]/u'     =>   'I',
+        '/[íìîï]/u'     =>   'i',
+        '/[éèêë]/u'     =>   'e',
+        '/[ÉÈÊË]/u'     =>   'E',
+        '/[óòôõºö]/u'   =>   'o',
+        '/[ÓÒÔÕÖ]/u'    =>   'O',
+        '/[úùûü]/u'     =>   'u',
+        '/[ÚÙÛÜ]/u'     =>   'U',
+        '/ç/'           =>   'c',
+        '/Ç/'           =>   'C',
+        '/ñ/'           =>   'n',
+        '/Ñ/'           =>   'N',
+        '/–/'           =>   ' ', // UTF-8 hyphen to "normal" hyphen
+        '/[’‘‹›‚]/u'    =>   ' ', // Literally a single quote
+        '/[“”«»„]/u'    =>   ' ', // Double quote
+        '/ /'           =>   ' ', // nonbreaking space (equiv. to 0x160)
+    );
+    return preg_replace(array_keys($utf8), array_values($utf8), $text);
+}
+
+
 $i = 0;
 
 if(isset($_POST["letter"])){
     $letters=$_POST["letter"];
-    $letters=htmlspecialchars(ctype_alpha($letters)); // some securities
+    $letters=htmlspecialchars(cleanString($letters)); // some securities and change accented letters with not accented relatives etc..
     $OK = false;
     foreach($_SESSION["Cword"] as $wletter){
         if(strtoupper($letters) == $wletter){
@@ -312,6 +349,7 @@ if(isset($_POST["newgame"])||$_SESSION["erreur"] >6){
 </div>
 <?php 
 
+
 // LOGIN "admin" PASSWORD "admin"   __________________________________________________________________________________ //
 
 
@@ -327,20 +365,50 @@ if( (isset($_POST['login']) and !empty($_POST['login'])) and
     $login=htmlspecialchars($_POST['login']);
     $password=htmlspecialchars($_POST['password']);
     if($login === 'admin' and $password === 'admin'){
-        echo '<a href="admin.php"> go to the admin page here</a>';
+        echo '<a href="admin.php"><h1> go to the admin page here</h1></a>';
     } else {
         echo '<span>please fill in all the fields</span>';
     }
 }
 
+// DEFAITE ______________________________________________________
 
 if($_SESSION['erreur']==6){
-    echo  '<div class="divvic">DÉFAITE !<br>';
+    echo  '<div class="divvic"><h1>DÉFAITE !</h1><br>';
     echo '<form method ="post" action="">   
             <input type="submit" value="PLAY AGAIN" name="newgame" class="memory"> </input> 
         </form></div>';
 }
 
+// VICTOIRE _____________________________________________________
+
+$k=0;
+$cword= (sizeof($_SESSION['Cword'])) -1 ;
+for($n = 0; $n<=$cword;$n++){
+    if($_SESSION['display'][$n] == $_SESSION['Cword'][$n]){
+        $k++;
+    }
+}
+
+
+if($k == ($cword + 1) and $_SESSION["erreur"]<6){
+    echo '<div class="divvic"><h1>Victoire</h1>';
+     echo '<form method ="post" action="">   
+            <input type="submit" value="PLAY AGAIN" name="newgame" class="memory"> </input>
+        </form></div> ';
+}
+
+// LETTERS ALREADY TRIED__________________________________________
+
+if(isset($_POST['letter'])){
+    $_SESSION['options'][]= $_POST['letter'];
+    echo '<h2> already tested </h2>';
+    echo '<h3>';
+    foreach($_SESSION['options']as $k => $v){
+    echo strtoupper($v).' ';
+    }
+    echo '</h3>';
+}
 
 ?>
 <div class ="container">
@@ -438,20 +506,6 @@ $val = $_SESSION["display"][$n];
 
 echo "</div>"; 
 
-$k=0;
-$cword= (sizeof($_SESSION['Cword'])) -1 ;
-for($n = 0; $n<=$cword;$n++){
-    if($_SESSION['display'][$n] == $_SESSION['Cword'][$n]){
-        $k++;
-    }
-}
-
-if($k == ($cword + 1) and $_SESSION["erreur"]<6){
-    echo '<div class="divvic"><h1>Victoire</h1>';
-     echo '<form method ="post" action="">   
-            <input type="submit" value="PLAY AGAIN" name="newgame" class="memory"> </input>
-        </form></div> ';
-}
 
 
 //var_dump($_SESSION['Cword']);
