@@ -63,8 +63,7 @@
 	</style>
 <body>
 	<header>
-			<a href="hangman.php">play</a>
-			<a href="index.php">home</a>
+			<a href="index.php">play</a>
 	</header>
 <main>
 	<div id="mainwrapper">

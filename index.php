@@ -243,8 +243,8 @@ h3 {
     font-size: 1em;
     padding: 5px;
 }
-#lettre {
-    color: white; 
+#letter {
+    width: 30px; 
 }
 
 </style>
@@ -340,8 +340,7 @@ if(isset($_POST["newgame"])||$_SESSION["erreur"] >6){
     </div>
 </div>
 <div class="game">
-<div class='newgame'> 
-    <span id="lettre">lettre</span>
+<div class='newgame'>
         <form method ="post">
         <input type="text" name="letter" id ="letter" maxlength="1" >  </input> <!-- if we want to accept only alpha pattern="[A-Za-z]*" -->
     </form>   
