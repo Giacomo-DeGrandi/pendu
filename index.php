@@ -244,7 +244,7 @@ h3 {
     padding: 5px;
 }
 #lettre {
-    color: white;
+    color: white; 
 }
 
 </style>
