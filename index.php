@@ -6,248 +6,10 @@ session_start();
 <!DOCTYPE html>
 <html>
  <head>
- <title> Runtrack PHP - Jour 7</title>
+ <title> pendu </title>
  <meta name="viewport" content="width=device-width, initial-scale=0.5">
  </head>
- <style> 
-
-p {
-    text-align : center;
-    font-size : 30px;
-}
-
-.container{
-    background-color : darkslateblue;
-    width : 400px;
-    height : 400px;
-    display : flex;
-    flex-direction :row;
-    justify-content : center;
-    align-items: start;
-    padding : 20px;
-}
-
-main{
-    display : flex;
-    flex-direction :row;
-    justify-content : center;
-    align-items: start;
-    gap : 20px;
-}
-
-span {
-    font-size: 1em;
-    font-family:  monospace;
-}
-
-a{  
-    text-decoration: none;
-    font-size: 1em;
-    font-family:  monospace;
-}
-h2 { 
-    font-size: 1.5em;
-    font-family:  monospace;
-    line-height: 5px;
-}
-h3 { 
-    line-height: 5px;
-    font-size: 1.5em;
-    font-family:  monospace;
-    display: inline;
-}
-
-
-.game{
-    display : flex;
-    flex-direction :column;
-    justify-content : center;
-    align-items: center;
-    gap : 20px;
-}
-
-.container1{
-    width : 100%;
-    height : 100px;
-    display : flex;
-    flex-direction :row;
-    justify-content : center;
-    align-items: center;
-}
-
-.socle{
-    display : flex ; 
-    flex-direction : row;
-    justify-content: end;
-    align-items : end;
-    height : 400px;
-    width : 200px;
-    margin-right : -50px;
-    margin-left : -90px;
-}
-
-.base{
-    width : 20px;
-    height : 15px;
-    background-color : white;  
-}
-
-.traverse{
-    display : flex;
-    flex-direction :row;
-}
-
-.brick{
-    width : 20px;
-    height : 40px;
-    background-color : white;   
-}
-
-.brick2{
-    width : 20px;
-    height : 20px;
-    background-color : white;   
-}
-
-.tête{
-    width : 40px;
-    height : 40px;
-    background-color : white;  
-    border-radius : 1100px;
-    margin-left :-8px;
-    margin-top: 10px;  
-}
-
-.tronc{
-    display : flex ; 
-    flex-direction : row;
-    gap : 6px;
-    margin-left : -25px;
-}
-
-.one{
-    width : 10px; 
-}
-
-.two{
-    width : 40px; 
-}
-
-.three{
-    width : 10px; 
-}
-
-.thorax{
-    width : 40px;
-    height : 100px;
-    background-color : white;  
-    border-radius : 90px;
-    margin-top: 10px;  
-}
-
-.arm1{
-    width : 10px;
-    height : 70px;
-    background-color : white;  
-    border-radius : 90px;
-    margin-top: 20px;  
-}
-
-.arm2{
-    width : 10px;
-    height : 70px;
-    background-color : white;  
-    border-radius : 90px;
-    margin-top: 20px;  
-
-}
-
-.legs{
-    display : flex ; 
-    flex-direction : row;
-    gap : 15px;
-}
-
-.leg1{
-    width : 15px;
-    height : 90px;
-    background-color : white;  
-    border-radius : 90px;
-    margin-left :-8px;
-    margin-top: 10px;  
-}
-
-.leg2{
-    width : 15px;
-    height : 90px;
-    background-color : white;  
-    border-radius : 90px;
-    margin-left :-8px;
-    margin-top: 10px;  
-}
-
-.text{
-    width : 550px;
-    height : 70px;
-    background-color : darkslateblue;
-    display : flex;
-    flex-direction : row;
-    justify-content : center;
-    align-items : center;
-    gap : 10px;
-}
-
-.newgame{
-    width : 440px;
-    height : 70px;
-    background-color : darkslateblue;
-    display : flex;
-    flex-direction : row;
-    justify-content : center;
-    align-items : center;
-    gap : 10px;
-    margin-top: 30px;
-}
-
-.newgame input{
-    padding : 7px;
-    background-color : white;
-    font-family : monospace;
-    border:none;
-    font-size : 20px;
-}
-
-.text input{
-    width : 30px;
-    height : 30px;
-    text-align :center;
-}
-.divletter {
-    background-color: white;
-    font-family : monospace;
-    padding: 10px;
-    width: 25px;
-    height: 25px;
-    font-size: 2em;
-    text-align: center;
-}
-.divvic {
-    background-color: white;
-    font-family : monospace;
-    font-size: 1.5em;
-    text-align: center;
-}
-
-.divvic input {
-    font-family : monospace;
-    font-size: 1em;
-    padding: 5px;
-}
-#letter {
-    width: 30px; 
-}
-
-</style>
+ <link rel="stylesheet" type="text/css" href="style.css">
  <body>
     <main>
 <?php 
@@ -341,9 +103,14 @@ if(isset($_POST["newgame"])||$_SESSION["erreur"] >6){
 </div>
 <div class="game">
 <div class='newgame'>
-        <form method ="post">
-        <input type="text" name="letter" id ="letter" maxlength="1" >  </input> <!-- if we want to accept only alpha pattern="[A-Za-z]*" -->
-    </form>   
+<?php 
+
+if($_SESSION['erreur'] < 6){
+    //  if we want to accept only alpha pattern="[A-Za-z]*
+    echo  '<form method ="post"><input type="text" name="letter" id="letter" maxlength="1" >  </input> </form>';
+}
+
+?>
 </div>
 <?php 
 
@@ -394,6 +161,8 @@ if($k == ($cword + 1) and $_SESSION["erreur"]<6){
      echo '<form method ="post" action="">   
             <input type="submit" value="PLAY AGAIN" name="newgame" class="memory"> </input>
         </form></div> ';
+    echo '<style> #letter{ pointer-events:none; }</style> ';
+
 }
 
 // LETTERS ALREADY TRIED__________________________________________
@@ -407,6 +176,7 @@ if(isset($_POST['letter'])){
     }
     echo '</h3>';
 }
+
 
 ?>
 <div class ="container">
